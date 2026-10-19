@@ -2,7 +2,7 @@
     <id>com.deepocean.theme</id>
     <name>Deep Ocean Dark</name>
     <category>UI</category>
-    <vendor url="https://github.com/tasarren/jetbrains-one-dark-theme">Deep Ocean</vendor>
+    <vendor url="https://github.com/tasarren/jetbrains-deep-ocean-theme">Deep Ocean</vendor>
 
     <idea-version since-build="253"/>
 
