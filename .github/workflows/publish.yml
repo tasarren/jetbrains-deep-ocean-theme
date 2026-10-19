@@ -1,6 +1,8 @@
 name: Publish
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -11,8 +13,28 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publish:
+  plan:
+    name: Check release version
     if: github.repository == 'tasarren/jetbrains-deep-ocean-theme' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      publish: ${{ steps.release.outputs.publish }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - id: release
+        name: Detect version bump or manual retry
+        run: node scripts/check-release.js
+
+  publish:
+    needs: plan
+    if: needs.plan.outputs.publish == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment: release
@@ -32,6 +54,7 @@ jobs:
         run: |
           node scripts/check-deep-ocean-theme.js
           node scripts/check-branch-policy.js --check
+          node scripts/check-release.js --check
           node scripts/create-deep-ocean-vivid-variants.js
           git diff --exit-code -- src/main/resources
           ./gradlew buildPlugin --no-daemon
