@@ -5,6 +5,8 @@
 - Replace One Dark with Deep Ocean Dark.
 - Add Deep Ocean Dark Islands, Deep Ocean Vivid, and Deep Ocean Vivid Islands.
 - New plugin id, icon, and display name. This is a breaking rebrand, not an update to One Dark.
+- Align all variants with Material-inspired Deep Ocean blue-black surfaces; remove slate tool-window headers and contrasting editor gutters.
+- Keep Islands alternate surfaces dark and disable inactive/tool-window gradient washout.
 
 ## [6.2.5] - 2026-06-29
 

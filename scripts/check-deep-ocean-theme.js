@@ -3,6 +3,7 @@
 import { readFile } from "fs/promises";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
+import assert from "node:assert/strict";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const RES = join(ROOT, "src/main/resources");
@@ -13,6 +14,15 @@ const THEMES = [
   "deep_ocean_vivid_islands.theme.json",
 ];
 const SCHEMES = ["deep_ocean_dark.xml", "deep_ocean_vivid.xml"];
+
+function flatten(value, path = "", result = {}) {
+  for (const [key, child] of Object.entries(value)) {
+    const name = path ? `${path}.${key}` : key;
+    if (child && typeof child === "object") flatten(child, name, result);
+    else result[name] = child;
+  }
+  return result;
+}
 
 function walk(value, tokens, path = "") {
   if (value && typeof value === "object" && !Array.isArray(value)) {
@@ -48,6 +58,27 @@ for (const file of THEMES) {
   if (file.includes("islands") && theme.parentTheme !== "Islands Dark") {
     throw new Error(`${file}: Islands theme must inherit from Islands Dark`);
   }
+
+  const ui = flatten(theme.ui);
+  const resolve = (value) => theme.colors[value] ?? value;
+  assert.equal(resolve(ui["Button.default.foreground"]), "#090B10", `${file}: cyan buttons need dark labels`);
+  for (const key of ["Panel.background", "Tree.background", "List.background", "Table.background", "ToolWindow.Header.inactiveBackground"]) {
+    assert.equal(resolve(ui[key]), "#0F111A", `${file}: ${key} must match editor`);
+  }
+  for (const key of ["MainWindow.background", "MainToolbar.background", "MainToolbar.inactiveBackground", "StatusBar.background", "ToolWindow.Stripe.background"]) {
+    assert.equal(resolve(ui[key]), "#090B10", `${file}: ${key} must use dark frame`);
+  }
+  assert.equal(resolve(ui["ToolWindow.Header.background"]), "#181A1F", `${file}: header must remain subtle`);
+  if (file.includes("islands")) {
+    assert.equal(ui["Island.inactiveAlpha"], 0, `${file}: no inactive washout`);
+    assert.equal(ui["Island.toolWindowAlpha"], 0, `${file}: no tool-window washout`);
+    for (const os of ["mac", "windows", "linux"]) {
+      assert.equal(ui[`Island.inactiveAlphaInStatusBar.os.${os}`], 0, `${file}: no status-bar washout on ${os}`);
+    }
+    for (const key of ["MainWindow.background", "MainToolbar.background", "ToolWindow.Stripe.background", "StatusBar.background"]) {
+      assert.equal(resolve(ui[`alt.${key}`]), "#090B10", `${file}: alt.${key} must not inherit gray`);
+    }
+  }
 }
 
 for (const file of SCHEMES) {
@@ -62,6 +93,8 @@ for (const file of SCHEMES) {
   if (!xml.includes('<scheme name="Deep Ocean')) {
     throw new Error(`${file}: scheme name not renamed`);
   }
+  assert.match(xml, /name="GUTTER_BACKGROUND" value="0F111A"/i, `${file}: gutter must match editor`);
+  assert.match(xml, /name="TEXT">\s*<value>\s*<option name="BACKGROUND" value="0F111A"/i, `${file}: editor background changed`);
 }
 
 const islands = JSON.parse(
