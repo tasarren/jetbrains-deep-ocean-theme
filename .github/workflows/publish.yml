@@ -3,24 +3,42 @@ name: Publish
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: marketplace-publish
+  cancel-in-progress: false
+
 jobs:
-  release:
+  publish:
+    if: github.repository == 'tasarren/jetbrains-one-dark-theme' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: release
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-
-      - name: Set up Java
-        uses: actions/setup-java@v5
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          distribution: 'temurin'
+          persist-credentials: false
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        with:
+          distribution: temurin
           java-version: '25'
-          cache: 'gradle'
-
-      - name: Build plugin
-        run: ./gradlew buildPlugin
-
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+      - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5
+      - name: Validate and build
+        run: |
+          node scripts/check-deep-ocean-theme.js
+          node scripts/check-branch-policy.js --check
+          node scripts/create-deep-ocean-vivid-variants.js
+          git diff --exit-code -- src/main/resources
+          ./gradlew buildPlugin --no-daemon
+          python3 scripts/check-plugin.py
       - name: Publish plugin
-        run: ./gradlew publishPlugin
+        run: |
+          test -n "$ORG_GRADLE_PROJECT_intellijPlatformPublishingToken" || { echo 'Missing release environment secret PUBLISH_TOKEN'; exit 1; }
+          ./gradlew publishPlugin --no-daemon
         env:
-          PUBLISH_TOKEN: ${{ secrets.PUBLISH_TOKEN }}
+          ORG_GRADLE_PROJECT_intellijPlatformPublishingToken: ${{ secrets.PUBLISH_TOKEN }}

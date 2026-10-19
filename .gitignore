@@ -1,6 +1,9 @@
 out/
 .idea/
 .intellijPlatform/
+/.orchestrator/
+/.cocoindex_code/
+*.iml
 
 # Ignore Gradle project-specific cache directory
 .gradle

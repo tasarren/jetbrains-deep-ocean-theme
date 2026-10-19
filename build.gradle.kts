@@ -2,7 +2,6 @@ import org.jetbrains.changelog.Changelog
 
 plugins {
     id("java")
-    alias(libs.plugins.kotlin)
     alias(libs.plugins.intelliJPlatform)
     alias(libs.plugins.changelog)
 }
@@ -10,8 +9,8 @@ plugins {
 group = providers.gradleProperty("pluginGroup").get()
 version = providers.gradleProperty("pluginVersion").get()
 
-kotlin {
-    jvmToolchain(25)
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
 }
 
 repositories {
@@ -72,6 +71,12 @@ changelog {
 }
 
 tasks {
+    processResources {
+        from("LICENSE") {
+            into("META-INF")
+        }
+    }
+
     wrapper {
         gradleVersion = providers.gradleProperty("gradleVersion").get()
     }
