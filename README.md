@@ -1,30 +1,65 @@
+<div align="center">
+
+<img src="src/main/resources/META-INF/pluginIcon.svg" width="96" height="96" alt="Deep Ocean logo">
+
 # JetBrains Deep Ocean Theme
 
-A blue-black dark theme for JetBrains IDEs, with regular, Islands, and Vivid variants.
+**Deep blue-black surfaces. Cool accents. One cohesive workspace.**
 
-Repository: [tasarren/jetbrains-deep-ocean-theme](https://github.com/tasarren/jetbrains-deep-ocean-theme).
+Four themes for your editor and IDE — balanced or Vivid, regular or Islands.
 
-## Themes
+[![CI](https://github.com/tasarren/jetbrains-deep-ocean-theme/actions/workflows/ci.yml/badge.svg?branch=next)](https://github.com/tasarren/jetbrains-deep-ocean-theme/actions/workflows/ci.yml)
+![JetBrains IDEs 2025.3+](https://img.shields.io/badge/JetBrains_IDEs-2025.3%2B-84FFFF?labelColor=0F111A)
+[![License: ISC](https://img.shields.io/badge/license-ISC-84FFFF?labelColor=0F111A)](LICENSE)
 
-- **Deep Ocean Dark** — balanced deep-ocean surfaces with coral, cyan, teal, and violet syntax accents.
-- **Deep Ocean Dark Islands** — Islands layout with the same palette.
-- **Deep Ocean Vivid** — brighter text, stronger accents, and saturated syntax colors.
-- **Deep Ocean Vivid Islands** — Islands layout with the Vivid palette.
+[Themes](#choose-your-depth) · [Install](#install) · [Build](#build-from-source) · [Contribute](CONTRIBUTING.md)
 
-## Setup
+</div>
 
-Requires JetBrains IDE 2025.3 or later. Build with `./gradlew buildPlugin`, or download a ZIP from a successful [CI run](https://github.com/tasarren/jetbrains-deep-ocean-theme/actions/workflows/ci.yml). In `Settings | Plugins`, use the gear menu's **Install Plugin from Disk…** and select `deep-ocean-dark-1.0.0.zip`.
+## More than an editor palette
 
-Then go to `Settings | Appearance & Behavior | Appearance` and choose one of the four themes. Native Islands layout requires New UI; Classic UI retains the colors without Islands rounding and gaps.
+- **Dark throughout.** Editor, gutters, tool windows, popups, and chrome share one surface hierarchy.
+- **Color with purpose.** Cyan and teal accents, violet keywords, warm constants, and green strings.
+- **Your layout, your contrast.** Keep things balanced or turn up the saturation with Vivid; use either with Islands.
 
-## Development
+## Choose your depth
 
-Feature and fix PRs target `next`. Release PRs merge `next` into protected `main`; Marketplace publishing is a separate manual action. See [CONTRIBUTING.md](CONTRIBUTING.md).
+| Theme | Palette | Layout |
+| :--- | :--- | :--- |
+| **Deep Ocean Dark** | Balanced text and cool accents | Regular |
+| **Deep Ocean Dark Islands** | Same balanced palette | Islands |
+| **Deep Ocean Vivid** | Brighter text and stronger syntax colors | Regular |
+| **Deep Ocean Vivid Islands** | Same Vivid palette | Islands |
 
-## Attribution
+Requires **JetBrains IDE 2025.3+** (build 253). Native Islands rounding and gaps require **New UI**; Classic UI keeps the colors without Islands geometry.
 
-Based on the ISC-licensed [One Dark theme](https://github.com/one-dark/jetbrains-one-dark-theme) by Mark Skelton, retaining its editor attribute coverage and UI structure. Material Deep Ocean provided visual palette inspiration; no Material plugin code or assets are bundled. Original copyright and license notices remain in [LICENSE](LICENSE) and the packaged plugin.
+## Install
 
-## License
+1. Download the `deep-ocean-dark` artifact from a successful [CI run](https://github.com/tasarren/jetbrains-deep-ocean-theme/actions/workflows/ci.yml), or [build the plugin](#build-from-source).
+2. If using a CI artifact, extract its outer archive to get the plugin ZIP. **Keep the plugin ZIP intact.**
+3. Open **Settings → Plugins → gear menu → Install Plugin from Disk…** and select `deep-ocean-dark-<version>.zip`.
+4. Restart if prompted, then open **Settings → Appearance & Behavior → Appearance → Theme** and choose your variant.
 
-ISC. See [LICENSE](LICENSE).
+> Another theme plugin overriding the colors? Disable its UI customizations before switching to Deep Ocean.
+
+## Build from source
+
+Use **Java 25** and **Node 24 LTS**. No npm dependencies.
+
+```bash
+node scripts/check-deep-ocean-theme.js
+./gradlew buildPlugin --no-daemon
+python3 scripts/check-plugin.py
+```
+
+Plugin ZIP lands in `build/distributions/`.
+
+## Contribute
+
+Feature and fix PRs target **`next`**. Release PRs merge **`next` into `main`**; version changes trigger Marketplace publishing. See [CONTRIBUTING.md](CONTRIBUTING.md) for checks and release setup.
+
+[Report a bug](https://github.com/tasarren/jetbrains-deep-ocean-theme/issues) · [Changelog](CHANGELOG.md) · [Security](SECURITY.md)
+
+## Credits & license
+
+Based on the ISC-licensed [One Dark theme](https://github.com/one-dark/jetbrains-one-dark-theme) by **Mark Skelton**, retaining its editor attribute coverage and UI structure. Original copyright and license notices remain in [LICENSE](LICENSE) and the packaged plugin.
