@@ -4,6 +4,8 @@ out/
 /.orchestrator/
 /.cocoindex_code/
 *.iml
+.env
+.env.*
 
 # Ignore Gradle project-specific cache directory
 .gradle
