@@ -1,0 +1,23 @@
+<idea-plugin>
+    <id>com.deepocean.theme</id>
+    <name>Deep Ocean Dark</name>
+    <category>UI</category>
+    <vendor url="https://github.com/one-dark/jetbrains-one-dark-theme">Deep Ocean</vendor>
+
+    <idea-version since-build="253.3"/>
+
+    <description><![CDATA[
+        <p>Deep Ocean Dark theme for JetBrains.</p>
+        <br>
+        <p>After installing the theme, go to Preferences | Appearance & Behavior | Appearance and select Deep Ocean Dark, Deep Ocean Dark Islands, Deep Ocean Vivid, or Deep Ocean Vivid Islands.</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <themeProvider id="f92ead4c-6dfa-493f-b3f3-1e2aab078922" path="/deep_ocean_dark.theme.json"/>
+        <themeProvider id="cc3a8701-59fa-4abe-aed6-847af776f937" path="/deep_ocean_dark_islands.theme.json"/>
+        <themeProvider id="2b61db38-e9a4-491d-adc5-b1c7ac5c3506" path="/deep_ocean_vivid.theme.json"/>
+        <themeProvider id="74fa14fd-6a40-4b89-a7ac-8897442a3b58" path="/deep_ocean_vivid_islands.theme.json"/>
+    </extensions>
+</idea-plugin>
