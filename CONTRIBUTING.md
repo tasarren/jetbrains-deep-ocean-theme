@@ -27,9 +27,13 @@ Minimum supported IDE is 2025.3 (build 253); development target is 2026.1. Befor
 
 ## Publishing
 
-Update `pluginVersion` and release notes on `next`, then merge a release PR into `main`. Run **Publish** manually on `main` after compatibility checks. Marketplace ownership of `com.deepocean.theme` and a valid publishing token are prerequisites; repository setup does not create a Marketplace listing.
+First upload: create your Marketplace vendor profile, accept its Developer Agreement, and manually upload the validated `build/distributions/deep-ocean-dark-1.0.0.zip`. Choose ISC license and link this repository as the source. JetBrains reviews the submission; GitHub Actions cannot create the initial listing.
+
+For later releases, update `pluginVersion` and release notes on `next`, complete compatibility checks, then merge a release PR into `main`. **Publish** runs automatically when the version differs from the previous `main` commit; unchanged versions skip publishing. Manual **Publish** runs on `main` remain available for retries, but Marketplace rejects versions already uploaded. No tags or GitHub Releases are required.
 
 Store `PUBLISH_TOKEN` only in GitHub's protected `release` environment, restricted to `main`. The workflow passes it through `ORG_GRADLE_PROJECT_intellijPlatformPublishingToken`. Never put credentials in files, command arguments, logs, or PR workflows.
+
+Create the token under your Marketplace profile's **My Tokens** after the initial listing exists. Add it in this repository's **Settings | Environments | release | Environment secrets**. Without this secret, version-bump releases fail before uploading; unchanged-version merges do not need a token.
 
 ## Attribution
 

@@ -35,6 +35,7 @@ jobs:
         run: |
           node scripts/check-deep-ocean-theme.js
           node scripts/check-branch-policy.js --check
+          node scripts/check-release.js --check
           node scripts/create-deep-ocean-vivid-variants.js
           git diff --exit-code -- src/main/resources
       - name: Build and inspect plugin
