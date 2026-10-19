@@ -1,8 +1,8 @@
-# Deep Ocean Dark
+# JetBrains Deep Ocean Theme
 
 A blue-black dark theme for JetBrains IDEs, with regular, Islands, and Vivid variants.
 
-Repository: [tasarren/jetbrains-one-dark-theme](https://github.com/tasarren/jetbrains-one-dark-theme).
+Repository: [tasarren/jetbrains-deep-ocean-theme](https://github.com/tasarren/jetbrains-deep-ocean-theme).
 
 ## Themes
 
@@ -13,7 +13,7 @@ Repository: [tasarren/jetbrains-one-dark-theme](https://github.com/tasarren/jetb
 
 ## Setup
 
-Requires JetBrains IDE 2025.3 or later. Build with `./gradlew buildPlugin`, or download a ZIP from a successful [CI run](https://github.com/tasarren/jetbrains-one-dark-theme/actions/workflows/ci.yml). In `Settings | Plugins`, use the gear menu's **Install Plugin from Disk…** and select `deep-ocean-dark-1.0.0.zip`.
+Requires JetBrains IDE 2025.3 or later. Build with `./gradlew buildPlugin`, or download a ZIP from a successful [CI run](https://github.com/tasarren/jetbrains-deep-ocean-theme/actions/workflows/ci.yml). In `Settings | Plugins`, use the gear menu's **Install Plugin from Disk…** and select `deep-ocean-dark-1.0.0.zip`.
 
 Then go to `Settings | Appearance & Behavior | Appearance` and choose one of the four themes. Native Islands layout requires New UI; Classic UI retains the colors without Islands rounding and gaps.
 
