@@ -3,6 +3,13 @@ name: CI
 on:
   push:
     branches: [next, main]
+    # Docs-only pushes skip this workflow. Pull requests cannot use paths-ignore:
+    # "Build and validate" is a required check and must still report success.
+    paths-ignore:
+      - '**/*.md'
+      - 'docs/**'
+      - '.github/FUNDING.yml'
+      - 'LICENSE'
   pull_request:
     branches: [next, main]
   workflow_dispatch:
@@ -23,15 +30,48 @@ jobs:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
+          # Full history so the docs-only check can diff the pull request.
+          fetch-depth: 0
+      - name: Detect documentation-only changes
+        id: docs
+        if: github.event_name == 'pull_request'
+        run: |
+          set -euo pipefail
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+          [[ "$base" =~ ^[0-9a-fA-F]{40}$ ]]
+          [[ "$head" =~ ^[0-9a-fA-F]{40}$ ]]
+          # Same paths as push paths-ignore. Keep both lists in sync.
+          files="$(git -c core.quotepath=false diff --name-only --no-renames "$base...$head")"
+          skip=true
+          if [ -z "$files" ]; then
+            skip=false
+          else
+            while IFS= read -r f; do
+              [ -z "$f" ] && continue
+              case "$f" in
+                *.md|docs/*|.github/FUNDING.yml|LICENSE) ;;
+                *) skip=false ;;
+              esac
+            done <<< "$files"
+          fi
+          echo "skip=$skip" >> "$GITHUB_OUTPUT"
+          if [ "$skip" = true ]; then
+            echo "Documentation-only pull request; skipping build and validation."
+          fi
       - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
+        if: steps.docs.outputs.skip != 'true'
         with:
           distribution: temurin
           java-version: '25'
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        if: steps.docs.outputs.skip != 'true'
         with:
           node-version: '24'
       - uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5
+        if: steps.docs.outputs.skip != 'true'
       - name: Validate themes and policies
+        if: steps.docs.outputs.skip != 'true'
         run: |
           node scripts/check-deep-ocean-theme.js
           node scripts/check-branch-policy.js --check
@@ -39,10 +79,12 @@ jobs:
           node scripts/create-deep-ocean-vivid-variants.js
           git diff --exit-code -- src/main/resources
       - name: Build and inspect plugin
+        if: steps.docs.outputs.skip != 'true'
         run: |
           ./gradlew buildPlugin --no-daemon
           python3 scripts/check-plugin.py
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        if: steps.docs.outputs.skip != 'true'
         with:
           name: deep-ocean-dark
           path: build/distributions/deep-ocean-dark-*.zip
