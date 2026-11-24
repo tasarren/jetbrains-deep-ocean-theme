@@ -11,6 +11,7 @@ Four themes for your editor and IDE — balanced or Vivid, regular or Islands.
 [![CI](https://github.com/tasarren/jetbrains-deep-ocean-theme/actions/workflows/ci.yml/badge.svg?branch=next)](https://github.com/tasarren/jetbrains-deep-ocean-theme/actions/workflows/ci.yml)
 ![JetBrains IDEs 2025.3+](https://img.shields.io/badge/JetBrains_IDEs-2025.3%2B-84FFFF?labelColor=0F111A)
 [![License: ISC](https://img.shields.io/badge/license-ISC-84FFFF?labelColor=0F111A)](LICENSE)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=ko-fi&logoColor=white&labelColor=0F111A)](https://ko-fi.com/tasarren)
 
 [Themes](#choose-your-depth) · [Install](#install) · [Build](#build-from-source) · [Contribute](CONTRIBUTING.md)
 
@@ -63,3 +64,7 @@ Feature and fix PRs target **`next`**. Release PRs merge **`next` into `main`**;
 ## Credits & license
 
 Based on the ISC-licensed [One Dark theme](https://github.com/one-dark/jetbrains-one-dark-theme) by **Mark Skelton**, retaining its editor attribute coverage and UI structure. Original copyright and license notices remain in [LICENSE](LICENSE) and the packaged plugin.
+
+## Support
+
+Tip on [Ko-fi](https://ko-fi.com/tasarren) or sponsor [@tasarren on GitHub](https://github.com/sponsors/tasarren). Both help keep this project moving.
